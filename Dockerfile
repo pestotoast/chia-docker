@@ -3,7 +3,7 @@ FROM ubuntu:latest
 EXPOSE 8555
 EXPOSE 8444
 
-ENV CHIA_ROOT=/root/.chia/mainnet
+ENV CHIA_ROOT=/home/chia/.chia/mainnet
 ENV keys="generate"
 ENV harvester="false"
 ENV farmer="false"
@@ -12,7 +12,7 @@ ENV farmer_address="null"
 ENV farmer_port="null"
 ENV testnet="false"
 ENV TZ="UTC"
-ENV upnp="true"
+ENV upnp="false"
 ENV log_to_file="true"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y bc curl lsb-release python3 tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3-dev python3.8-venv python3.8-distutils python-is-python3 vim tzdata && \
@@ -33,6 +33,8 @@ WORKDIR /chia-blockchain
 
 COPY docker-start.sh /usr/local/bin/
 COPY docker-entrypoint.sh /usr/local/bin/
+RUN useradd -ms /bin/bash -u 8444 chia && chown -R chia:chia /chia-blockchain && chown -R chia:chia /usr/local/bin/*
+USER chia
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["docker-start.sh"]
