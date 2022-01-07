@@ -44,7 +44,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ghcr.io/pestotoast/chia
+            ghcr.io/pestotoast/chia-docker
           tags: |
             type=raw,value=latest
             type=raw,value=${{ steps.latest-tag.outputs.result }}
