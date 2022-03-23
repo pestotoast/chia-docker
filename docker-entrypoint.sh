@@ -21,7 +21,7 @@ fi
 if [[ ${keys} == "persistent" ]]; then
   echo "Not touching key directories"
 elif [[ ${keys} == "generate" ]]; then
-  echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
+  echo "to use your own keys pass the mnemonic as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
   chia keys generate
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
@@ -48,8 +48,24 @@ if [[ -n "${log_level}" ]]; then
   chia configure --log-level "${log_level}"
 fi
 
+if [[ -n "${peer_count}" ]]; then
+  chia configure --set-peer-count "${peer_count}"
+fi
+
+if [[ -n "${outbound_peer_count}" ]]; then
+  chia configure --set_outbound-peer-count "${outbound_peer_count}"
+fi
+
 if [[ -n ${farmer_address} && -n ${farmer_port} ]]; then
   chia configure --set-farmer-peer "${farmer_address}:${farmer_port}"
+fi
+
+if [[ -n ${crawler_db_path} ]]; then
+  chia configure --crawler-db-path "${crawler_db_path}"
+fi
+
+if [[ -n ${crawler_minimum_version_count} ]]; then
+  chia configure --crawler-minimum-version-count "${crawler_minimum_version_count}"
 fi
 
 sed -i 's/localhost/127.0.0.1/g' "$CHIA_ROOT/config/config.yaml"
