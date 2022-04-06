@@ -90,4 +90,6 @@ if [[ ${service} == "harvester" ]]; then
   fi
 fi
 
+/chia-exporter serve &
+
 exec "$@"

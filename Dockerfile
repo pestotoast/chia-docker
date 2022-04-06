@@ -40,6 +40,7 @@ ENV TZ="UTC"
 ENV upnp="false"
 ENV log_to_file="true"
 ENV healthcheck="true"
+ENV CHIA_EXPORTER_MAXMIND_DB_PATH=/GeoLite2-Country.mmdb
 
 # Deprecated legacy options
 ENV harvester="false"
