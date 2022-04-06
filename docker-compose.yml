@@ -1,0 +1,17 @@
+version: "3.6"
+services:
+  chia:
+    container_name: chia
+    restart: unless-stopped
+    image: ghcr.io/chia-network/chia:latest
+    ports:
+      - 8444:8444
+      #- 9914:9914
+    environment:
+      # Farmer Only
+     - CHIA_HOME=/root/.chia/mainnet
+     #- CHIA_EXPORTER_MAXMIND_DB_PATH=/GeoLite2-Country.mmdb
+     # - CHIA_EXPORTER_METRICS_PORT=9914
+    volumes:
+      - /data:/root/.chia
+      #- /home/user/mnemonic:/path/in/container

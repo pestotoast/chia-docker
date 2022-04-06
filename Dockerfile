@@ -1,3 +1,10 @@
+#build chia exporter
+FROM golang:1 as builder
+
+RUN git clone https://github.com/Chia-Network/chia-exporter.git /app && cd /app && git fetch --tags && git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
+WORKDIR /app
+RUN make build
+
 # CHIA BUILD STEP
 FROM python:3.9 AS chia_build
 
@@ -45,6 +52,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     dpkg-reconfigure -f noninteractive tzdata
 
 COPY --from=chia_build /chia-blockchain /chia-blockchain
+COPY --from=builder /app/bin/chia-exporter /chia-exporter
+ADD ./GeoLite2-Country.mmdb /GeoLite2-Country.mmdb
 
 ENV PATH=/chia-blockchain/venv/bin:$PATH
 WORKDIR /chia-blockchain
